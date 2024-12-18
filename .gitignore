@@ -1,0 +1,11 @@
+/bin/
+/obj/
+
+/go.sum
+/go.mod
+
+.vscode/
+/.idea/
+
+*_pb.go
+.DS_Store

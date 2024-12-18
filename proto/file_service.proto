@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+// Generated using Protocol Buffers version 3. Ensure compatibility.
+option go_package = "pkg/fileservicepb";
+
+package fileservice;
+
+service FileService {
+    // Uploads a file in chunks
+    rpc UploadFile (stream UploadFileRequest) returns (UploadFileResponse);
+
+    // Lists all files with their metadata
+    rpc ListFiles (ListFilesRequest) returns (ListFilesResponse);
+
+    // Downloads a file in chunks
+    rpc DownloadFile (DownloadFileRequest) returns (stream FileChunk);
+}
+
+// Request to upload a file, supporting both metadata and content chunks
+message UploadFileRequest {
+    oneof data {
+        FileMetadata metadata = 1;
+        bytes content = 2;
+    }
+}
+
+// Response after a file is successfully uploaded
+message UploadFileResponse {
+    string message = 1;
+}
+
+// Request to list all files
+message ListFilesRequest {}
+
+// Response containing a list of files with their metadata
+message ListFilesResponse {
+    repeated FileMetadata files = 1;
+}
+
+// Request to download a specific file by name
+message DownloadFileRequest {
+    string name = 1;
+}
+
+// A chunk of file content for downloading
+message FileChunk {
+    bytes content = 1;
+}
+
+// Metadata for a file
+message FileMetadata {
+    string name = 1;
+    int64 created_at = 2;
+    int64 updated_at = 3;
+}
+
